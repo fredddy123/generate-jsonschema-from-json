@@ -1,5 +1,13 @@
 function getType(item) {
-    return Array.isArray(item) ? 'array' : typeof item;
+    if (Array.isArray(item)) {
+        return 'array';
+    }
+
+    if (item === null) {
+        return 'null';
+    }
+
+    return typeof item;
 }
 
 function generateJsonSchemaFromJson(json) {
@@ -19,6 +27,13 @@ function generateJsonSchemaFromJson(json) {
             type: 'array',
             items: json[0] ? generateJsonSchemaFromJson(json[0]) : undefined
         }
+    }
+
+    if (getType(json) === 'null') {
+        return {
+            type: 'object',
+            properties: {}
+        };
     }
 
     return {
